@@ -6,9 +6,15 @@
 
 开发工具为idea，环境jdk1.8.0_381，apache-tomcat-9.0.83，mysql-5.7.44
 
-**用户账号密码：1805010219    1234**
+**<font color='red'>读者</font>登录地址：http://{serverHost}:{port}/<font color='red'>reader/04readerFrame.jsp</font>**
+
+**读者账号密码：1805010219    1234**
+
+**<font color='red'>图书管理员</font>登录地址：http://{serverHost}:{port}/<font color='red'>loginManager.html</font>**
 
 **图书管理员账号密码：root  1234**
+
+**<font color='red'>系统管理员</font>登录地址：http://{serverHost}:{port}/<font color='red'>adminLogin.html</font> **
 
 **系统管理员账号密码：admin admin**
 
