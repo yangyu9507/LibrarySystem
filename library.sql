@@ -356,3 +356,43 @@ FROM `borrow_books`
          LEFT JOIN `borrow_card` on `borrow_books`.`card_id` =  `borrow_card`.`id`
          LEFT JOIN `books` on `borrow_books`.`book_id` = `books`.`id`
 WHERE `borrow_books`.`manager_id` IS NULL;
+
+
+-- ----------------------------
+-- CREATE VIEW `borrow_book_trend_view`
+-- ----------------------------
+
+DROP VIEW IF EXISTS `borrow_book_trend_view`;
+
+CREATE VIEW `borrow_book_trend_view`
+            ( date, count )
+AS
+SELECT temp.`borrowDate` AS date, COUNT(*)
+FROM
+    ( SELECT date_format( borrow_date, '%Y-%m-%d' ) AS `borrowDate`
+      FROM borrow_books
+      WHERE borrow_date >= DATE_SUB( curdate(), INTERVAL 30 DAY )
+    ) temp
+GROUP BY
+    temp.`borrowDate`;
+
+
+-- ----------------------------
+-- CREATE VIEW `most_popular_books_view`
+-- ----------------------------
+
+DROP VIEW IF EXISTS `most_popular_books_view`;
+
+CREATE VIEW `most_popular_books_view`
+            ( `bookName`, `count` )
+AS
+SELECT
+    `books`.`name` AS `bookName`,
+    COUNT(*) AS `count`
+FROM `borrow_books`
+
+         LEFT JOIN `borrow_card` on `borrow_books`.`card_id` =  `borrow_card`.`id`
+         LEFT JOIN `books` on `borrow_books`.`book_id` = `books`.`id`
+WHERE `borrow_books`.`manager_id` IS NOT NULL
+  and `borrow_books`.`borrow_date` >= DATE_SUB( curdate(), INTERVAL 30 DAY )
+GROUP BY `books`.`name` ORDER BY count(*) DESC LIMIT 30;
