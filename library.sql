@@ -306,3 +306,53 @@ VALUES
     (5, '1', '100', '1', '0.100'),
     (6, '15', '60', '1、2、3', '0.100'),
     (7, '1', '1', '1、3', '1.000');
+
+
+-- ----------------------------
+-- CREATE VIEW `borrow_books_view`
+-- ----------------------------
+
+DROP VIEW IF EXISTS `borrow_books_view`;
+
+CREATE VIEW `borrow_books_view`
+            (`id`, `reader`, `bookName`, `borrowDate`, `endDate`, `returnDate`, `illegal`, `managerName`)
+AS
+SELECT
+    `borrow_books`.`id`,
+    `borrow_card`.`reader`,
+    `books`.`name` AS bookName,
+    `borrow_books`.`borrow_date` AS borrowDate,
+    `borrow_books`.`end_date` AS endDate,
+    `borrow_books`.`return_date` AS returnDate,
+    `borrow_books`.`illegal`,
+    `manager`.`name` AS managerName
+FROM `borrow_books`
+         LEFT JOIN `manager` on `borrow_books`.`manager_id` = `manager`.`account`
+         LEFT JOIN `borrow_card` on `borrow_books`.`card_id` =  `borrow_card`.`id`
+         LEFT JOIN `books` on `borrow_books`.`book_id` = `books`.`id`
+WHERE `borrow_books`.`manager_id` IS NOT NULL;
+
+
+-- ----------------------------
+-- CREATE VIEW `return_books_view`
+-- ----------------------------
+
+DROP VIEW IF EXISTS `return_books_view`;
+
+CREATE VIEW `return_books_view`
+            (`id`, `reader`, `bookName`, `borrowDate`, `endDate`, `returnDate`, `illegal`, `managerName`)
+AS
+SELECT
+    `borrow_books`.`id`,
+    `borrow_card`.`reader`,
+    `books`.`name` AS bookName,
+    `borrow_books`.`borrow_date` AS borrowDate,
+    `borrow_books`.`end_date` AS endDate,
+    `borrow_books`.`return_date` AS returnDate,
+    `borrow_books`.`illegal`,
+    `manager`.`name` AS managerName
+FROM `borrow_books`
+         LEFT JOIN `manager` on `borrow_books`.`manager_id` = `manager`.`account`
+         LEFT JOIN `borrow_card` on `borrow_books`.`card_id` =  `borrow_card`.`id`
+         LEFT JOIN `books` on `borrow_books`.`book_id` = `books`.`id`
+WHERE `borrow_books`.`manager_id` IS NULL;
